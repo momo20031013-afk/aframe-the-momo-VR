@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>豪華城堡噴水池遊樂場景</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+  #text-overlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  /* 在這裡新增或修改文字大小的樣式 */
+  #text-overlay h3 {
+    font-size: 24px; /* 將此數值改為您想要的大小 */
+  }
+</style>
+    <script>
+      AFRAME.registerComponent('water-stream', {
+        schema: {
+          startPos: {type: 'vec3', default: {x: 0, y: 0.5, z: 0}},
+          endPos: {type: 'vec3', default: {x: 1, y: 0.5, z: 0}},
+          arcHeight: {type: 'number', default: 1},
+          duration: {type: 'number', default: 1500},
+          delay: {type: 'number', default: 0},
+          color: {type: 'color', default: '#ADD8E6'},
+          radius: {type: 'number', default: 0.1}
+        },
+        init: function() {
+          this.el.setAttribute('geometry', `primitive: sphere; radius: ${this.data.radius}`);
+          this.el.setAttribute('material', `color: ${this.data.color}; transparent: true; opacity: 0.7;`);
+          this.el.setAttribute('position', this.data.startPos);
+
+          const midPointY = Math.max(this.data.startPos.y, this.data.endPos.y) + this.data.arcHeight;
+
+          this.el.setAttribute('animation', `
+            property: position;
+            dir: alternate;
+            loop: true;
+            dur: ${this.data.duration};
+            delay: ${this.data.delay};
+            easing: linear;
+            from: ${this.data.startPos.x} ${this.data.startPos.y} ${this.data.startPos.z};
+            to: ${this.data.endPos.x} ${this.data.endPos.y} ${this.data.endPos.z};
+            path: ${this.data.startPos.x} ${this.data.startPos.y} ${this.data.startPos.z},
+                  ${(this.data.startPos.x + this.data.endPos.x) / 2} ${midPointY} ${(this.data.startPos.z + this.data.endPos.z) / 2},
+                  ${this.data.endPos.x} ${this.data.endPos.y} ${this.data.endPos.z};
+          `);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="text-overlay">
+      <h3>
+        四資工一甲<br>
+        41443105<br>
+        鄭品均<br>
+      </h3>
+    </div>
+
+    <a-scene>
+      <a-plane position="0 0 -10" rotation="-90 0 0" width="100" height="100" color="#4CAF50"></a-plane>
+      <a-sky color="#87CEEB"></a-sky> 
+
+      <a-circle position="0 0.05 -5" radius="5" color="#87CEEB" rotation="-90 0 0" material="transparent: true; opacity: 0.8; roughness: 0.2; metalness: 0.5"></a-circle>
+      
+      <a-entity id="fountain-area" position="0 0 -5">
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 0 3 0; arcHeight: 0; duration: 2000; delay: 0; color: #ADD8E6; radius: 0.2"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 0 3.2 0; arcHeight: 0; duration: 2100; delay: 100; color: #ADD8E6; radius: 0.2"></a-entity>
+        
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 2 0.5 0; arcHeight: 2; duration: 1800; delay: 200; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: -2 0.5 0; arcHeight: 2; duration: 1800; delay: 400; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 0 0.5 2; arcHeight: 2; duration: 1800; delay: 600; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 0 0.5 -2; arcHeight: 2; duration: 1800; delay: 800; color: #ADD8E6; radius: 0.15"></a-entity>
+        
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 1.5 0.5 1.5; arcHeight: 2; duration: 1900; delay: 1000; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: -1.5 0.5 1.5; arcHeight: 2; duration: 1900; delay: 1200; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: 1.5 0.5 -1.5; arcHeight: 2; duration: 1900; delay: 1400; color: #ADD8E6; radius: 0.15"></a-entity>
+        <a-entity water-stream="startPos: 0 0.5 0; endPos: -1.5 0.5 -1.5; arcHeight: 2; duration: 1900; delay: 1600; color: #ADD8E6; radius: 0.15"></a-entity>
+        
+      </a-entity>
+
+      <a-entity id="trees">
+        <a-cone position="8 4 -20" radius-bottom="3" radius-top="0.1" height="6" color="#228B22"></a-cone>
+        <a-cylinder position="8 1 -20" radius="0.5" height="2" color="#8B4513"></a-cylinder>
+
+        <a-cone position="20 5 -25" radius-bottom="4" radius-top="0.1" height="7" color="#228B22"></a-cone>
+        <a-cylinder position="20 1.5 -25" radius="0.6" height="3" color="#8B4513"></a-cylinder>
+        
+        <a-cone position="-20 5 -30" radius-bottom="4" radius-top="0.1" height="7" color="#228B22"></a-cone>
+        <a-cylinder position="-20 1.5 -30" radius="0.6" height="3" color="#8B4513"></a-cylinder>
+        
+        <a-cone position="-5 4 -25" radius-bottom="3" radius-top="0.1" height="6" color="#228B22"></a-cone>
+        <a-cylinder position="-5 1 -25" radius="0.5" height="2" color="#8B4513"></a-cylinder>
+      </a-entity>
+
+      <a-entity id="swing-set" position="-15 0 -5">
+        <a-box position="-4 4 0" width="0.6" height="8" depth="0.6" color="#8B4513"></a-box>
+        <a-box position="4 4 0" width="0.6" height="8" depth="0.6" color="#8B4513"></a-box>
+        <a-box position="0 8 0" width="8.6" height="0.6" depth="0.6" color="#8B4513"></a-box>
+
+        <a-entity position="0 8 0" rotation="0 0 0"
+                  animation="property: rotation; to: 30 0 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine;">
+          <a-box position="-1.5 -2.5 0" width="0.2" height="5" depth="0.2" color="#636363"></a-box>
+          <a-box position="1.5 -2.5 0" width="0.2" height="5" depth="0.2" color="#636363"></a-box>
+          <a-box position="0 -5 0" width="4" height="0.4" depth="1" color="#A0522D"></a-box>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="seesaw" position="15 0 0">
+        <a-box position="0 0.5 0" width="2" height="1" depth="0.5" color="blue"></a-box>
+        <a-entity position="0 1 0" rotation="0 0 0"
+                  animation="property: rotation; to: 10 0 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine;">
+          <a-box position="0 0 0" width="3" height="0.2" depth="8" color="#FF5733"></a-box>
+        </a-entity>
+      </a-entity>
+      <a-entity id="grand-castle" position="0 0 -50">
+        <a-box position="0 5 0" width="20" height="10" depth="8" color="#D8BFD8"></a-box>
+        <a-box position="0 15 0" width="16" height="8" depth="6" color="#D8BFD8"></a-box>
+        <a-cone position="0 25 0" radius-bottom="6" radius-top="0.8" height="12" color="#87CEEB"></a-cone>
+        
+        <a-box position="-11 0 0" width="5" height="30" depth="5" color="#D8BFD8"></a-box>
+        <a-cone position="-11 17 0" radius-bottom="2.5" radius-top="0.5" height="6" color="#87CEEB"></a-cone>
+        <a-box position="11 0 0" width="5" height="30" depth="5" color="#D8BFD8"></a-box>
+        <a-cone position="11 17 0" radius-bottom="2.5" radius-top="0.5" height="6" color="#87CEEB"></a-cone>
+
+        <a-box position="0 2.5 4.01" width="4" height="5" depth="0.2" color="#654321"></a-box> <a-cylinder position="0 5.5 4.01" radius="2" height="0.2" rotation="90 0 0" color="#654321"></a-cylinder> <a-box position="-6 7 4.01" width="1.5" height="2" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+        <a-box position="6 7 4.01" width="1.5" height="2" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+        
+        <a-box position="-4 16 3.01" width="1.2" height="1.8" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+        <a-box position="4 16 3.01" width="1.2" height="1.8" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+
+        <a-box position="-11 12 2.51" width="1" height="1.5" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+        <a-box position="11 12 2.51" width="1" height="1.5" depth="0.1" color="#000000" material="opacity:0.7; transparent:true;"></a-box>
+      </a-entity>
+
+      <a-entity id="clouds">
+        <a-sphere position="-35 20 -70" radius="5" color="#FFFFFF" opacity="0.8"></a-sphere>
+        <a-sphere position="-28 22 -72" radius="4" color="#FFFFFF" opacity="0.8"></a-sphere>
+        <a-sphere position="-42 18 -75" radius="3" color="#FFFFFF" opacity="0.8"></a-sphere>
+
+        <a-sphere position="35 20 -70" radius="6" color="#FFFFFF" opacity="0.8"></a-sphere>
+        <a-sphere position="28 22 -72" radius="5" color="#FFFFFF" opacity="0.8"></a-sphere>
+      </a-entity>
+
+      <a-entity camera look-controls wasd-controls position="0 1.6 4"></a-entity>
+      <a-light type="ambient" color="#BBB"></a-light>
+      <a-light type="directional" position="1 1 1" intensity="0.5"></a-light>
+    </a-scene>
+  </body>
+</html>
